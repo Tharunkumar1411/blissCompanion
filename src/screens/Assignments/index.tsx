@@ -1,7 +1,9 @@
 import { FlatList } from 'react-native-gesture-handler';
-import { Assignment } from '../../components/Course';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View } from 'react-native';
+import Assignment from '../../components/Assignment';
+import UpdateModal from '../../components/UpdateModal';
+import { useState } from 'react';
 
 const DATA: any = [
     {
@@ -28,15 +30,37 @@ const DATA: any = [
   ];
 
 function AssignmentList(): React.JSX.Element {
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(DATA[0]);
+
+    const handleCardPress = (details: any) => {
+        setModalVisible(true);
+        setSelectedItem(details);
+    };
+
     return(
         <View>
             <SafeAreaView>
                 <FlatList
                     data={DATA}
-                    renderItem={({item}) => <Assignment points={item.course_id} title={item.title} dueDate={item.due_date} status={item.status} />}
+                    renderItem={({item}) => <Assignment details={item} handleCardPress={(details) => handleCardPress(details)}/>}
                     keyExtractor={item => item.id}
                 />
             </SafeAreaView>
+
+            <UpdateModal
+                visible={isModalVisible}
+                onClose={() => setModalVisible(false)}
+                assignmentDetails={selectedItem}
+                onUpdate={(updatedAssignment) => {
+                    // Handle the update here
+                    console.log('Updated assignment:', updatedAssignment);
+                }}
+                onDelete={(assignmentId) => {
+                    // Handle the delete here
+                    console.log('Deleting assignment:', assignmentId);
+                }}
+            />
 
         </View>
     );

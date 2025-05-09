@@ -1,23 +1,29 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, GestureResponderEvent } from 'react-native';
 
-interface AssignmentProps {
+interface AssignmentDetails {
+    id?: string | number;
     title: string;
+    status: string;
     dueDate: string;
-    status: 'pending' | 'completed' | 'overdue';
     points: number;
-    onPress?: () => void;
+}
+interface AssignmentProps {
+    details: AssignmentDetails;
+    handleCardPress: (item: AssignmentDetails) => void
 }
 
 const Assignment: React.FC<AssignmentProps> = ({
-    title,
-    dueDate,
-    status,
-    points,
-    onPress,
+    details,
+    handleCardPress,
 }) => {
+
+    const onPressHandler = (_event: GestureResponderEvent) => {
+        handleCardPress(details);
+    };
+
     const getStatusColor = () => {
-        switch (status) {
+        switch (details?.status) {
             case 'completed':
                 return '#4CAF50';
             case 'overdue':
@@ -28,18 +34,20 @@ const Assignment: React.FC<AssignmentProps> = ({
     };
 
     return (
-        <TouchableOpacity style={styles.container} onPress={onPress}>
-            <View style={styles.header}>
-                <Text style={styles.title}>{title}</Text>
-                <View style={[styles.statusBadge, { backgroundColor: getStatusColor() }]}>
-                    <Text style={styles.statusText}>{status.toUpperCase()}</Text>
+        <View>
+            <TouchableOpacity style={styles.container} onPress={onPressHandler}>
+                <View style={styles.header}>
+                    <Text style={styles.title}>{details?.title}</Text>
+                    <View style={[styles.statusBadge, { backgroundColor: getStatusColor() }]}>
+                        <Text style={styles.statusText}>{details?.status.toUpperCase()}</Text>
+                    </View>
                 </View>
-            </View>
-            <View style={styles.details}>
-                <Text style={styles.dueDate}>Due: {dueDate}</Text>
-                <Text style={styles.points}>{points} points</Text>
-            </View>
-        </TouchableOpacity>
+                <View style={styles.details}>
+                    <Text style={styles.dueDate}>Due: {details?.dueDate}</Text>
+                    <Text style={styles.points}>{details?.points} points</Text>
+                </View>
+            </TouchableOpacity>
+        </View>
     );
 };
 

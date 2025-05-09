@@ -1,25 +1,10 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Assignment, Course } from '../../components/Course';
+import { Text, View } from 'react-native';
 
 function Home(): React.JSX.Element {
     return(
         <View>
-            <Course
-                title="Introduction to React Native"
-                instructor="John Doe"
-                progress={75}
-                totalAssignments={8}
-                onPress={() => {/* handle press */}}
-            />
-
-            <Assignment
-                title="Final Project"
-                dueDate="2024-03-20"
-                status="pending"
-                points={100}
-                onPress={() => {/* handle press */}}
-            />
+            <Text>home</Text>
         </View>
     );
 }
