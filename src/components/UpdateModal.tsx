@@ -36,7 +36,7 @@ function UpdateModal({
     const [editedAssignment, setEditedAssignment] = useState<AssignmentDetails>(assignmentDetails);
 
     const handleUpdate = () => {
-        // onUpdate(editedAssignment);
+        onUpdate(editedAssignment);
         onClose();
     };
 
@@ -92,21 +92,21 @@ function UpdateModal({
 
                         <View style={styles.inputGroup}>
                             <Text style={styles.label}>Due Date</Text>
-                            {/* <TextInput
+                            <TextInput
                                 style={styles.input}
                                 value={editedAssignment.dueDate}
                                 onChangeText={(text) =>
                                     setEditedAssignment({ ...editedAssignment, dueDate: text })
                                 }
                                 placeholder="YYYY-MM-DD"
-                            /> */}
+                            />
                         </View>
 
                         <View style={styles.inputGroup}>
                             <Text style={styles.label}>Points</Text>
-                            {/* <TextInput
+                            <TextInput
                                 style={styles.input}
-                                value={editedAssignment.points.toString()}
+                                value={editedAssignment.points?.toString()}
                                 onChangeText={(text) =>
                                     setEditedAssignment({
                                         ...editedAssignment,
@@ -115,7 +115,7 @@ function UpdateModal({
                                 }
                                 keyboardType="numeric"
                                 placeholder="Points"
-                            /> */}
+                            />
                         </View>
 
                         <View style={styles.inputGroup}>
@@ -126,13 +126,13 @@ function UpdateModal({
                                         key={status}
                                         style={[
                                             styles.statusButton,
-                                            // editedAssignment.status === status && styles.statusButtonActive,
+                                            editedAssignment.status === status && styles.statusButtonActive,
                                         ]}
-                                        // onPress={() =>
-                                        //     setEditedAssignment({ ...editedAssignment, status })
-                                        // }
+                                        onPress={() =>
+                                            setEditedAssignment({ ...editedAssignment, status })
+                                        }
                                     >
-                                        {/* <Text
+                                        <Text
                                             style={[
                                                 styles.statusButtonText,
                                                 editedAssignment.status === status &&
@@ -140,7 +140,7 @@ function UpdateModal({
                                             ]}
                                         >
                                             {status.charAt(0).toUpperCase() + status.slice(1)}
-                                        </Text> */}
+                                        </Text>
                                     </TouchableOpacity>
                                 ))}
                             </View>

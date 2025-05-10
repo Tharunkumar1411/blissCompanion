@@ -2,32 +2,34 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 interface CourseProps {
-    title: string;
-    instructor: string;
-    progress: number;
-    totalAssignments: number;
-    onPress?: () => void;
+    id?: string | number;
+    course_name: string,
+    professor: string,
+    start_date: string,
+    end_date:  string,
+    totalAssignments: number
 }
 
-const Course: React.FC<CourseProps> = ({
-    title,
-    instructor,
-    progress,
-    totalAssignments,
-    onPress,
+interface CourseDetailsProps {
+    details: CourseProps;
+    handlePress: () => void
+}
+
+const Course: React.FC<CourseDetailsProps> = ({
+   details,
+   handlePress,
 }) => {
     return (
-        <TouchableOpacity style={styles.container} onPress={onPress}>
-            <View style={styles.header}>
-                <Text style={styles.title}>{title}</Text>
-                <Text style={styles.instructor}>Instructor: {instructor}</Text>
-            </View>
-            <View style={styles.progressContainer}>
-                <View style={[styles.progressBar, { width: `${progress}%` }]} />
-            </View>
-            <Text style={styles.progressText}>Progress: {progress}%</Text>
-            <Text style={styles.assignmentsText}>Total Assignments: {totalAssignments}</Text>
-        </TouchableOpacity>
+        <View>
+            <TouchableOpacity style={styles.container} onPress={handlePress}>
+                <View style={styles.header}>
+                    <Text style={styles.title}>{details?.course_name}</Text>
+                    <Text style={styles.instructor}>Instructor: {details?.professor}</Text>
+                </View>
+                <Text style={styles.assignmentsText}>Total Assignments: {details?.totalAssignments}</Text>
+            </TouchableOpacity>
+        </View>
+
     );
 };
 
