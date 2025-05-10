@@ -3,25 +3,47 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { View } from 'react-native';
 import Assignment from '../../components/Assignment';
 import UpdateModal from '../../components/UpdateModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../../types';
+
+type AssignmentScreenRouteProp = RouteProp<RootStackParamList, 'Assignment'>;
+
+interface AssignmentListProps {
+    route: AssignmentScreenRouteProp;
+}
 
 const DATA: any = [
     {
-        id: 8,
-        course_id: 3,
+        id: 121,
+        course_id: 1,
         title: 'HTML & CSS Basics Assignment',
         due_date: '2025-02-20',
         status: 'completed',
       },
       {
-        id: 9,
-        course_id: 3,
+        id: 122,
+        course_id: 2,
         title: 'JavaScript Fundamentals',
         due_date: '2025-03-15',
         status: 'pending',
       },
       {
-        id: 10,
+        id: 123,
+        course_id: 3,
+        title: 'Responsive Design Project',
+        due_date: '2025-04-10',
+        status: 'pending',
+      },
+      {
+        id: 124,
+        course_id: 3,
+        title: 'Responsive Design Project',
+        due_date: '2025-04-10',
+        status: 'pending',
+      },
+      {
+        id: 125,
         course_id: 3,
         title: 'Responsive Design Project',
         due_date: '2025-04-10',
@@ -29,7 +51,8 @@ const DATA: any = [
       },
   ];
 
-function AssignmentList(): React.JSX.Element {
+function AssignmentList({ route }: AssignmentListProps): React.JSX.Element {
+    const { courseId } = route.params;
     const [isModalVisible, setModalVisible] = useState(false);
     const [selectedItem, setSelectedItem] = useState(DATA[0]);
 
@@ -37,6 +60,10 @@ function AssignmentList(): React.JSX.Element {
         setModalVisible(true);
         setSelectedItem(details);
     };
+
+    useEffect(() => {
+        console.log('checking this:', courseId);
+    }, [courseId]);
 
     return(
         <View>

@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { NavigationProp } from '../../types';
+import { useNavigation } from '@react-navigation/native';
 
 interface CourseProps {
     id?: string | number;
@@ -7,21 +9,27 @@ interface CourseProps {
     professor: string,
     start_date: string,
     end_date:  string,
-    totalAssignments: number
+    totalAssignments: number,
+    assignments: object
 }
 
 interface CourseDetailsProps {
     details: CourseProps;
-    handlePress: () => void
 }
 
 const Course: React.FC<CourseDetailsProps> = ({
    details,
-   handlePress,
 }) => {
+    const navigation = useNavigation<NavigationProp>();
+    const onPressHandler = (id: number | string | undefined) => {
+        if (typeof id === 'undefined') {return;}
+        const courseId = typeof id === 'string' ? parseInt(id) : id;
+        navigation.navigate('Assignment', { courseId } as { courseId: number });
+    };
+
     return (
         <View>
-            <TouchableOpacity style={styles.container} onPress={handlePress}>
+            <TouchableOpacity style={styles.container} onPress={() => onPressHandler(details?.id)}>
                 <View style={styles.header}>
                     <Text style={styles.title}>{details?.course_name}</Text>
                     <Text style={styles.instructor}>Instructor: {details?.professor}</Text>
