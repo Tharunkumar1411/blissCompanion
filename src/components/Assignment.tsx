@@ -5,8 +5,7 @@ interface AssignmentDetails {
     id?: string | number;
     title: string;
     status: string;
-    dueDate: string;
-    points: number;
+    due_date: string;
 }
 interface AssignmentProps {
     details: AssignmentDetails;
@@ -43,8 +42,7 @@ const Assignment: React.FC<AssignmentProps> = ({
                     </View>
                 </View>
                 <View style={styles.details}>
-                    <Text style={styles.dueDate}>Due: {details?.dueDate}</Text>
-                    <Text style={styles.points}>{details?.points} points</Text>
+                    <Text style={styles.dueDate}>Due: {details?.due_date}</Text>
                 </View>
             </TouchableOpacity>
         </View>

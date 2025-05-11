@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Modal,
     SafeAreaView,
@@ -11,11 +11,10 @@ import {
 } from 'react-native';
 
 interface AssignmentDetails {
-    id: string;
+    id: number | string;
     title: string;
-    dueDate: string;
+    due_Date: string;
     status: 'pending' | 'completed' | 'overdue';
-    points: number;
 }
 
 interface UpdateModalProps {
@@ -33,12 +32,28 @@ function UpdateModal({
     onUpdate,
     onDelete,
 }: UpdateModalProps): React.JSX.Element {
-    const [editedAssignment, setEditedAssignment] = useState<AssignmentDetails>(assignmentDetails);
-
+    const [editedAssignment, setEditedAssignment] = useState<AssignmentDetails>({
+        id: '',
+        title: '',
+        due_Date: '',
+        status: 'pending',
+      });
+    console.log('editedAssignment', assignmentDetails, editedAssignment);
     const handleUpdate = () => {
         onUpdate(editedAssignment);
         onClose();
     };
+
+    useEffect(() => {
+        if (assignmentDetails) {
+          setEditedAssignment({
+            id: assignmentDetails.id,
+            title: assignmentDetails.title,
+            due_Date: assignmentDetails.due_date,  // 🔥 NOTE: fix key casing
+            status: assignmentDetails.status,
+          });
+        }
+      }, [assignmentDetails]);
 
     const handleDelete = () => {
         Alert.alert(
@@ -53,7 +68,7 @@ function UpdateModal({
                     text: 'Delete',
                     style: 'destructive',
                     onPress: () => {
-                        onDelete(assignmentDetails.id);
+                        onDelete(String(assignmentDetails.id));
                         onClose();
                     },
                 },
@@ -94,27 +109,11 @@ function UpdateModal({
                             <Text style={styles.label}>Due Date</Text>
                             <TextInput
                                 style={styles.input}
-                                value={editedAssignment.dueDate}
+                                value={editedAssignment.due_Date}
                                 onChangeText={(text) =>
-                                    setEditedAssignment({ ...editedAssignment, dueDate: text })
+                                    setEditedAssignment({ ...editedAssignment, due_Date: text })
                                 }
                                 placeholder="YYYY-MM-DD"
-                            />
-                        </View>
-
-                        <View style={styles.inputGroup}>
-                            <Text style={styles.label}>Points</Text>
-                            <TextInput
-                                style={styles.input}
-                                value={editedAssignment.points?.toString()}
-                                onChangeText={(text) =>
-                                    setEditedAssignment({
-                                        ...editedAssignment,
-                                        points: parseInt(text) || 0,
-                                    })
-                                }
-                                keyboardType="numeric"
-                                placeholder="Points"
                             />
                         </View>
 
