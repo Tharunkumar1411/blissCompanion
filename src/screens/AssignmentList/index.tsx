@@ -1,6 +1,6 @@
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Assignment from '../../components/Assignment';
 import UpdateModal from '../../components/UpdateModal';
 import { useEffect, useState } from 'react';
@@ -73,6 +73,9 @@ function AssignmentList({ route }: AssignmentListProps): React.JSX.Element {
                     renderItem={({item}) => <Assignment details={item} handleCardPress={(details) => handleCardPress(details)}/>}
                     keyExtractor={item => item.id}
                 />
+                <TouchableOpacity style={styles.addButton} onPress={handleCardPress}>
+                    <Text style={styles.addButtonText}>+ Add Assignments</Text>
+                </TouchableOpacity>
             </SafeAreaView>
 
             <UpdateModal
@@ -92,5 +95,28 @@ function AssignmentList({ route }: AssignmentListProps): React.JSX.Element {
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    addButton: {
+        backgroundColor: '#2196F3',
+        borderRadius: 10,
+        padding: 16,
+        margin: 16,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    addButtonText: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 16,
+    },
+});
 
 export default AssignmentList;

@@ -28,7 +28,7 @@ export function AddCourse({ visible, onClose, onSubmit }: AddCourseProps) {
       professor,
       start_date: startDate,
       end_date: endDate,
-      totalAssignments: parseInt(totalAssignments, 10),
+      total_assignments: parseInt(totalAssignments, 10),
     });
     onClose();
     // optionally reset form

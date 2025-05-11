@@ -1,49 +1,25 @@
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Course from '../../components/Course';
 import { FlatList } from 'react-native-gesture-handler';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AddCourse } from '../../components/AddCourse';
-import { NavigationProp } from '../../../types';
-import { useNavigation } from '@react-navigation/native';
+import { loadCourses } from '../../utils/heler';
+import axios from 'axios';
+import { ENDPOINTS } from '../../utils/endpoint';
 
-const DATA:any = [
-    {
-        id: 1,
-        course_name: 'Introduction to Computer Science',
-        professor: 'Dr. Jane Smith',
-        start_date: '2025-01-15',
-        end_date: '2025-05-10',
-        totalAssignments: 5,
-        assignments: {
-            assignmentId: [121, 122, 123, 124, 125],
-        },
-    },
-    {
-        id: 2,
-        course_name: 'Advanced Data Structures',
-        professor: 'Prof. John Davis',
-        start_date: '2025-01-20',
-        end_date: '2025-05-15',
-        totalAssignments: 4,
-        assignments: {
-            assignmentId: [121, 122, 123, 124],
-        },
-    },
-    {
-        id: 3,
-        course_name: 'Web Development Fundamentals',
-        professor: 'Dr. Michael Chen',
-        start_date: '2025-02-01',
-        end_date: '2025-06-01',
-        totalAssignments: 2,
-        assignments: {
-            assignmentId: [121, 122],
-        },
-    },
-];
+interface CourseProps {
+    id?: string | number;
+    course_name: string;
+    professor: string;
+    start_date: string;
+    end_date: string;
+    totalAssignments: number;
+    assignments: object;
+}
 
 function CourseList(): React.JSX.Element {
     const [openAddCourse, setOpenAddCourse] = useState(false);
+    const [courses, setCourses] = useState<CourseProps[]>([]);
 
     const handleAddCourse = () => {
         setOpenAddCourse(true);
@@ -53,17 +29,36 @@ function CourseList(): React.JSX.Element {
         setOpenAddCourse(false);
     };
 
-    const onSubmit = () => {
-
+    const onSubmit = (values: any) => {
+        axios.post(ENDPOINTS.ADD_NEW_COURSE, values)
+            .then((response) => {
+                console.log('response', response);
+                setCourses(prevCourses => [...prevCourses, response.data.course]);
+            }
+            ).catch((error) => {
+                console.error('Error adding new course:', error);
+            }
+        );
+        setOpenAddCourse(false);
     };
 
+
+    useEffect(() => {
+      const fetchData = async () => {
+        const data = await loadCourses();
+        console.log('data', data);
+        setCourses(data);
+      };
+      fetchData();
+    }, []);
+
     return(
-        <View>
+        <ScrollView>
             <SafeAreaView>
                 <FlatList
-                    data={DATA}
+                    data={courses}
                     renderItem={({item}) => <Course details={item} />}
-                    keyExtractor={item => item.id}
+                    keyExtractor={item => String(item.id)}
                 />
             </SafeAreaView>
 
@@ -72,7 +67,7 @@ function CourseList(): React.JSX.Element {
             </TouchableOpacity>
 
             <AddCourse visible={openAddCourse} onSubmit={onSubmit} onClose={onClose}/>
-        </View>
+        </ScrollView>
     );
 }
 

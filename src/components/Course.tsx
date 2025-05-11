@@ -28,16 +28,13 @@ const Course: React.FC<CourseDetailsProps> = ({
     };
 
     return (
-        <View>
-            <TouchableOpacity style={styles.container} onPress={() => onPressHandler(details?.id)}>
-                <View style={styles.header}>
-                    <Text style={styles.title}>{details?.course_name}</Text>
-                    <Text style={styles.instructor}>Instructor: {details?.professor}</Text>
-                </View>
-                <Text style={styles.assignmentsText}>Total Assignments: {details?.totalAssignments}</Text>
-            </TouchableOpacity>
-        </View>
-
+        <TouchableOpacity style={styles.container} onPress={() => onPressHandler(details?.id)}>
+            <View style={styles.header}>
+                <Text style={styles.title}>{details?.course_name}</Text>
+                <Text style={styles.instructor}>Instructor: {details?.professor}</Text>
+            </View>
+            <Text style={styles.assignmentsText}>Total Assignments: {details?.totalAssignments}</Text>
+        </TouchableOpacity>
     );
 };
 
